@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Search, ShoppingBag, User, Menu } from 'lucide-react';
 import MobileNav from './MobileNav';
-
+import { useCart } from '../../context/CartProvider';
 /**
  * Main application navigation header.
  * Maintains presentational static controls (search input mockup, cart badge '0').
  */
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { totalItemsCount } = useCart();
 
   return (
     <>
@@ -113,7 +114,7 @@ export default function Navbar() {
               >
                 <ShoppingBag className="w-5 h-5" />
                 <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-orange-500 text-white text-[11px] font-bold flex items-center justify-center shadow-xs">
-                  0
+                  {totalItemsCount}
                 </span>
               </Link>
             </div>

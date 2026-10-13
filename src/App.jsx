@@ -4,6 +4,7 @@ import AnnouncementBar from './components/layout/AnnouncementBar';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import AppRoutes from './routes/AppRoutes';
+import { Toaster } from 'react-hot-toast';
 
 /**
  * Root ShopLite Application Component.
@@ -27,6 +28,7 @@ export default function App() {
         <main className="flex-1">
           <AppRoutes />
         </main>
+        <Toaster />
 
         {/* Global Storefront Footer */}
         <Footer />

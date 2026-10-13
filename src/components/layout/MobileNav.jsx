@@ -1,13 +1,15 @@
-import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
-import { X, Search, ShoppingBag, User, ArrowRight } from 'lucide-react';
-import { categories } from '../../data/categories';
+import React from "react";
+import { NavLink, Link } from "react-router-dom";
+import { X, Search, ShoppingBag, User, ArrowRight } from "lucide-react";
+import { categories } from "../../data/categories";
+import { useCart } from "../../context/CartProvider";
 
 /**
  * Mobile navigation drawer for small screens.
  */
 export default function MobileNav({ isOpen, onClose }) {
   if (!isOpen) return null;
+  const { totalItemsCount } = useCart();
 
   return (
     <div className="fixed inset-0 z-50 lg:hidden">
@@ -65,8 +67,8 @@ export default function MobileNav({ isOpen, onClose }) {
                 className={({ isActive }) =>
                   `px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
                     isActive
-                      ? 'bg-neutral-100 text-orange-600 font-semibold'
-                      : 'text-neutral-700 hover:bg-neutral-50'
+                      ? "bg-neutral-100 text-orange-600 font-semibold"
+                      : "text-neutral-700 hover:bg-neutral-50"
                   }`
                 }
               >
@@ -78,8 +80,8 @@ export default function MobileNav({ isOpen, onClose }) {
                 className={({ isActive }) =>
                   `px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
                     isActive
-                      ? 'bg-neutral-100 text-orange-600 font-semibold'
-                      : 'text-neutral-700 hover:bg-neutral-50'
+                      ? "bg-neutral-100 text-orange-600 font-semibold"
+                      : "text-neutral-700 hover:bg-neutral-50"
                   }`
                 }
               >
@@ -91,8 +93,8 @@ export default function MobileNav({ isOpen, onClose }) {
                 className={({ isActive }) =>
                   `px-3 py-2.5 rounded-md text-sm font-medium transition-colors ${
                     isActive
-                      ? 'bg-neutral-100 text-orange-600 font-semibold'
-                      : 'text-neutral-700 hover:bg-neutral-50'
+                      ? "bg-neutral-100 text-orange-600 font-semibold"
+                      : "text-neutral-700 hover:bg-neutral-50"
                   }`
                 }
               >
@@ -104,8 +106,8 @@ export default function MobileNav({ isOpen, onClose }) {
                 className={({ isActive }) =>
                   `px-3 py-2.5 rounded-md text-sm font-medium flex items-center justify-between transition-colors ${
                     isActive
-                      ? 'bg-neutral-100 text-orange-600 font-semibold'
-                      : 'text-neutral-700 hover:bg-neutral-50'
+                      ? "bg-neutral-100 text-orange-600 font-semibold"
+                      : "text-neutral-700 hover:bg-neutral-50"
                   }`
                 }
               >
@@ -114,7 +116,7 @@ export default function MobileNav({ isOpen, onClose }) {
                   <span>Cart</span>
                 </span>
                 <span className="bg-neutral-900 text-white text-xs px-2 py-0.5 rounded-full">
-                  0
+                  {totalItemsCount}
                 </span>
               </NavLink>
             </nav>

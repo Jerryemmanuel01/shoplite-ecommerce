@@ -1,8 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { ShoppingBag, Star } from 'lucide-react';
-import ProductBadge from './ProductBadge';
-import { formatCurrency } from '../../utils/formatCurrency';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { ShoppingBag, Star } from "lucide-react";
+import ProductBadge from "./ProductBadge";
+import { formatCurrency } from "../../utils/formatCurrency";
+import { useCart } from "../../context/CartProvider";
+import toast from "react-hot-toast";
 
 /**
  * Reusable Product Card component.
@@ -13,6 +15,22 @@ import { formatCurrency } from '../../utils/formatCurrency';
  */
 export default function ProductCard({ product }) {
   if (!product) return null;
+  const { addToCart } = useCart();
+  const [isAdded, setIsAdded] = useState(false);
+
+  const handleQuickAddToCart = (e) => {
+    e.preventDefault();
+
+    if (!product.inStock) return;
+
+    addToCart(product, 1, product.colors[0] || "Standard");
+    setIsAdded(true);
+
+    setTimeout(() => {
+      toast.success("Added to cart");
+      return setIsAdded(false);
+    }, 500);
+  };
 
   const {
     id,
@@ -29,7 +47,6 @@ export default function ProductCard({ product }) {
 
   return (
     <div className="group relative bg-white border border-neutral-200/80 rounded-xl overflow-hidden flex flex-col transition-all duration-300 hover:shadow-lg hover:border-neutral-300">
-      
       {/* Top Image Container */}
       <div className="relative aspect-square w-full bg-[#F8F8F6] overflow-hidden">
         <Link to={`/product/${id}`} className="block w-full h-full">
@@ -53,15 +70,16 @@ export default function ProductCard({ product }) {
           <button
             type="button"
             disabled={!inStock}
+            onClick={handleQuickAddToCart}
             className={`w-full py-2.5 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-2 shadow-md transition-colors ${
               inStock
-                ? 'bg-neutral-900 text-white hover:bg-neutral-800 active:bg-neutral-950'
-                : 'bg-neutral-200 text-neutral-500 cursor-not-allowed'
+                ? "bg-neutral-900 text-white hover:bg-neutral-800 active:bg-neutral-950"
+                : "bg-neutral-200 text-neutral-500 cursor-not-allowed"
             }`}
             aria-label={`Add ${name} to cart`}
           >
             <ShoppingBag className="w-3.5 h-3.5" />
-            <span>{inStock ? 'Add to Cart' : 'Out of Stock'}</span>
+            <span>{inStock ? "Add to Cart" : "Out of Stock"}</span>
           </button>
         </div>
       </div>
@@ -87,9 +105,7 @@ export default function ProductCard({ product }) {
 
           {/* Product Name */}
           <h3 className="text-sm font-semibold text-neutral-900 line-clamp-1 group-hover:text-orange-600 transition-colors">
-            <Link to={`/product/${id}`}>
-              {name}
-            </Link>
+            <Link to={`/product/${id}`}>{name}</Link>
           </h3>
         </div>
 
@@ -116,9 +132,7 @@ export default function ProductCard({ product }) {
             <ShoppingBag className="w-4 h-4" />
           </button>
         </div>
-
       </div>
-
     </div>
   );
 }
