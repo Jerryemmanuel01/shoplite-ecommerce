@@ -17,3 +17,4 @@ export function saveCartToStorage(cartItems) {
     console.error("Failed to save cart to local storage", error);
   }
 }
+

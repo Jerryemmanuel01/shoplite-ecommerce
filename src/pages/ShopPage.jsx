@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
-import { SlidersHorizontal, Search, X } from 'lucide-react';
-import PageContainer from '../components/layout/PageContainer';
-import Breadcrumbs from '../components/ui/Breadcrumbs';
-import ProductGrid from '../components/products/ProductGrid';
-import FilterSidebar from '../components/shop/FilterSidebar';
-import SortDropdown from '../components/shop/SortDropdown';
-import Pagination from '../components/shop/Pagination';
-import { products } from '../data/products';
+import React, { useState } from "react";
+import { SlidersHorizontal, Search, X } from "lucide-react";
+import PageContainer from "../components/layout/PageContainer";
+import Breadcrumbs from "../components/ui/Breadcrumbs";
+import ProductGrid from "../components/products/ProductGrid";
+import FilterSidebar from "../components/shop/FilterSidebar";
+import SortDropdown from "../components/shop/SortDropdown";
+import Pagination from "../components/shop/Pagination";
+import { products } from "../data/products";
+import { useParams, useSearchParams } from "react-router-dom";
 
 /**
  * ShopLite Catalog Page (`/shop`).
- * 
+ *
  * TEACHING ARCHITECTURE NOTE:
  * In this starter scaffold, all 16 products are rendered directly from `products.js`.
  * The search input, filter checkboxes, sorting select, and pagination buttons are
@@ -22,20 +23,26 @@ import { products } from '../data/products';
  */
 export default function ShopPage() {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  console.log(searchParams.get("category"));
+  
 
   return (
     <div className="pb-20">
       {/* Top Banner & Breadcrumbs */}
       <div className="bg-[#F8F8F6] border-b border-neutral-200">
         <PageContainer className="py-8 sm:py-12">
-          <Breadcrumbs items={[{ label: 'Shop Catalog' }]} />
+          <Breadcrumbs items={[{ label: "Shop Catalog" }]} />
 
           <div className="mt-4 max-w-3xl">
             <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-900">
               All Products
             </h1>
             <p className="mt-2 text-sm sm:text-base text-neutral-600 leading-relaxed">
-              Explore our complete collection of meticulously designed everyday essentials. Filter by department or sort by price to discover your next favorite item.
+              Explore our complete collection of meticulously designed everyday
+              essentials. Filter by department or sort by price to discover your
+              next favorite item.
             </p>
           </div>
         </PageContainer>
@@ -44,7 +51,6 @@ export default function ShopPage() {
       <PageContainer className="mt-8 sm:mt-10">
         {/* Controls Toolbar: Search, Filter toggle, Count & Sort */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-neutral-200">
-          
           {/* Search Bar & Mobile Filter Trigger */}
           <div className="flex items-center gap-3 flex-1 max-w-lg">
             <div className="relative flex-1">
@@ -72,17 +78,20 @@ export default function ShopPage() {
           {/* Catalog Count & Sorting */}
           <div className="flex items-center justify-between lg:justify-end gap-4">
             <p className="text-xs sm:text-sm text-neutral-500">
-              Showing <span className="font-semibold text-neutral-900">16</span> of <span className="font-semibold text-neutral-900">{products.length}</span> products
+              Showing <span className="font-semibold text-neutral-900">16</span>{" "}
+              of{" "}
+              <span className="font-semibold text-neutral-900">
+                {products.length}
+              </span>{" "}
+              products
             </p>
 
             <SortDropdown />
           </div>
-
         </div>
 
         {/* Catalog Main Layout: Sidebar + Product Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-10 mt-8 items-start">
-          
           {/* Desktop Filter Sidebar */}
           <div className="hidden lg:block lg:col-span-1 sticky top-28">
             <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-2xs">
@@ -96,7 +105,6 @@ export default function ShopPage() {
 
             <Pagination currentPage={1} totalPages={2} />
           </div>
-
         </div>
       </PageContainer>
 
@@ -141,7 +149,6 @@ export default function ShopPage() {
           </div>
         </div>
       )}
-
     </div>
   );
 }

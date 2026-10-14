@@ -1,5 +1,6 @@
 import { useReducer } from "react";
 import { createContext } from "react";
+import { loadCartFromStorage, saveCartToStorage } from "../utils/cartStorage";
 
 //Action types Defination
 export const CART_ACTION = {
@@ -13,7 +14,7 @@ export const CART_ACTION = {
 // shape of our cart state
 
 export const initalCartState = {
-  items: [],
+  items: loadCartFromStorage() || [],
   couponCode: "",
   discountPercent: 0,
 };
@@ -38,6 +39,7 @@ export const cartReducer = (state, action) => {
           ...updatedItems[existingIndex],
           quantity: updatedItems[existingIndex].quantity + quantity,
         };
+        saveCartToStorage(updatedItems);
         return { ...state, items: updatedItems };
       }
 
@@ -50,7 +52,7 @@ export const cartReducer = (state, action) => {
         quantity,
         unitPrice: product.price,
       };
-
+      saveCartToStorage([...state.items, newItem]);
       return { ...state, items: [...state.items, newItem] };
     }
 
@@ -58,29 +60,37 @@ export const cartReducer = (state, action) => {
       const { id, quantity } = action.payload;
 
       if (quantity <= 0) {
+        const result = state.items.filter((item) => item.id !== id);
+        saveCartToStorage(result);
         return {
           ...state,
-          items: state.items.filter((item) => item.id !== id),
+          items: result,
         };
       }
+
+      const result = state.items.map((item) =>
+        item.id === id ? { ...item, quantity } : item,
+      );
+      saveCartToStorage(result);
       return {
         ...state,
-        items: state.items.map((item) =>
-          item.id === id ? { ...item, quantity } : item,
-        ),
+        items: result,
       };
     }
 
     case CART_ACTION.REMOVE_FROM_CART: {
       const { id } = action.payload;
 
+      const result = state.items.filter((item) => item.id !== id);
+      saveCartToStorage(result);
       return {
         ...state,
-        items: state.items.filter((item) => item.id !== id),
+        items: result,
       };
     }
 
     case CART_ACTION.CLEAR_CART: {
+      saveCartToStorage([])
       return { ...state, items: [], couponCode: "", discountPercent: 0 };
     }
 
@@ -97,5 +107,3 @@ export const cartReducer = (state, action) => {
 };
 
 export const CartContext = createContext(null);
-
-
